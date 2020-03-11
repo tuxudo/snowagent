@@ -1,0 +1,18 @@
+{
+ "version":"Version",
+ "version_long":"Version String",
+ "build":"Build",
+ "rev":"Revision",
+ "sitename":"Site Name",
+ "configname":"Config Name",
+ "server_address":"Server Address",
+ "client_cert":"Client Certificate",
+ "client_cert_password":"Client Cert Password",
+ "drop_location":"Scan Result Location",
+ "software_scan_running_processes":"Scan Running Processes",
+ "software_scan_jar":"Scan JAR Files",
+ "http_ssl_verify":"Verify HTTP SSL Connections",
+ "snowagent":"Snow Agent",
+ "snowagent_versions":"Snow Agent Versions",
+ "reporttitle":"Snow Agent Report"
+}
