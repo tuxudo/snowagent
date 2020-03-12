@@ -13,6 +13,7 @@ import re
 from xml.etree import cElementTree as ElementTree
 
 sys.path.insert(0,'/usr/local/munki')
+sys.path.insert(0,'/usr/local/munkireport')
 from munkilib import FoundationPlist
 
 
@@ -47,26 +48,39 @@ def get_snowagent_config():
 
         snowagent_config = {}
 
-        if xmldict['Agent']:
+        try:
             if xmldict['Agent']['SiteName']:
                 snowagent_config['sitename'] = xmldict['Agent']['SiteName']
-            if  xmldict['Agent']['ConfigName']:
+        except:
+            snowagent_config['sitename'] = ""
+
+        try:
+            if xmldict['Agent']['ConfigName']:
                 snowagent_config['configname'] = xmldict['Agent']['ConfigName']
+        except:
+            snowagent_config['configname'] = ""
 
-        if xmldict['Server']:
-            if xmldict['Server']['Endpoint']:
-                if xmldict['Server']['Endpoint']['Address']:
-                    snowagent_config['server_address'] = xmldict['Server']['Endpoint']['Address']
+        try:
+            if xmldict['Server']['Endpoint']['Address']:
+                snowagent_config['server_address'] = xmldict['Server']['Endpoint']['Address']
+        except:
+            snowagent_config['server_address'] = ""
 
-            if xmldict['Server']['Endpoint']['ClientCertificate']:
-                if xmldict['Server']['Endpoint']['ClientCertificate']['FileName']:
-                    snowagent_config['client_cert'] = xmldict['Server']['Endpoint']['ClientCertificate']['FileName']
-                if xmldict['Server']['Endpoint']['ClientCertificate']['Password']:
-                    snowagent_config['client_cert_password'] = xmldict['Server']['Endpoint']['ClientCertificate']['Password']
-
-        if xmldict['DropLocation']:          
+        try:
+            if xmldict['Server']['Endpoint']['ClientCertificate']['FileName']:
+                snowagent_config['client_cert'] = xmldict['Server']['Endpoint']['ClientCertificate']['FileName']
+        except:
+            snowagent_config['client_cert'] = ""
+        try:
+            if xmldict['Server']['Endpoint']['ClientCertificate']['Password']:
+                snowagent_config['client_cert_password'] = xmldict['Server']['Endpoint']['ClientCertificate']['Password']
+        except:
+            snowagent_config['client_cert_password'] = ""
+        try:
             if xmldict['DropLocation']['Path']:
                 snowagent_config['drop_location'] = xmldict['DropLocation']['Path']
+        except:
+            snowagent_config['drop_location'] = ""
 
         xml_str = ElementTree.tostring(root, encoding='utf8', method='xml')
 
@@ -178,7 +192,7 @@ def main():
     # Get results
     result = dict()
     result = merge_two_dicts(get_snowagent_config(), get_snowagent_version())
-    
+
     # Write snowagent results to cache
     output_plist = os.path.join(cachedir, 'snowagent.plist')
     FoundationPlist.writePlist(result, output_plist)
