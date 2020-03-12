@@ -50,19 +50,19 @@ class Snowagent_model extends \Model {
             $myList = $parser->toArray();
 
             $typeList = array(
-                'version' => '',
-                'version_long' => '',
-                'build' => '',
-                'rev' => '',
-                'sitename' => '',
-                'configname' => '',
-                'server_address' => '',
-                'client_cert' => '',
-                'client_cert_password' => '',
-                'drop_location' => '',
-                'software_scan_running_processes' => '',
-                'software_scan_jar' => '',
-                'http_ssl_verify' => ''
+                'version' => null,
+                'version_long' => null,
+                'build' => null,
+                'rev' => null,
+                'sitename' => null,
+                'configname' => null,
+                'server_address' => null,
+                'client_cert' => null,
+                'client_cert_password' => null,
+                'drop_location' => null,
+                'software_scan_running_processes' => null,
+                'software_scan_jar' => null,
+                'http_ssl_verify' => null
             );
 
             // Process each key
