@@ -7,8 +7,8 @@
 $(document).on('appReady', function(){
     
 	$.getJSON(appUrl + '/module/snowagent/get_data/' + serialNumber, function(data){
-        
-        if( data.length == 0 ){
+
+        if( data.length == 0 || data[0]["sitename"] == null){
             $('#snowagent-msg').text(i18n.t('no_data'));
             $('#snowagent-cnt').text('')
         } else {
