@@ -1,4 +1,4 @@
-#!/usr/local/munkireport/munkireport-python2
+#!/usr/local/munki/munki-python
 
 """
 snowagent for munkireport.
@@ -14,8 +14,8 @@ from xml.etree import cElementTree as ElementTree
 
 sys.path.insert(0,'/usr/local/munki')
 sys.path.insert(0,'/usr/local/munkireport')
-from munkilib import FoundationPlist
 
+from munkilib import FoundationPlist
 
 def get_snowagent_version():
     
@@ -25,6 +25,7 @@ def get_snowagent_version():
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (output, unused_error) = proc.communicate()
+        output = output.decode()
 
         try:
             version = output.split('+build')[0]
@@ -136,8 +137,8 @@ class XmlDictConfig(dict):
     And then use xmldict for what it is... a dict.
     '''
     def __init__(self, parent_element):
-        if parent_element.items():
-            self.update(dict(parent_element.items()))
+        if list(parent_element.items()):
+            self.update(dict(list(parent_element.items())))
         for element in parent_element:
             if element:
                 # treat like dict - we assume that if the first two tags
@@ -152,15 +153,15 @@ class XmlDictConfig(dict):
                     # the value is the list itself 
                     aDict = {element[0].tag: XmlListConfig(element)}
                 # if the tag has attributes, add those to the dict
-                if element.items():
-                    aDict.update(dict(element.items()))
+                if list(element.items()):
+                    aDict.update(dict(list(element.items())))
                 self.update({element.tag: aDict})
             # this assumes that if you've got an attribute in a tag,
             # you won't be having any text. This may or may not be a 
             # good idea -- time will tell. It works for the way we are
             # currently doing XML configuration files...
-            elif element.items():
-                self.update({element.tag: dict(element.items())})
+            elif list(element.items()):
+                self.update({element.tag: dict(list(element.items()))})
             # finally, if there are no child tags and no attributes, extract
             # the text
             else:
@@ -173,27 +174,13 @@ def merge_two_dicts(x, y):
 
 def main():
     """Main"""
-    # Skip manual check
-    if len(sys.argv) > 1:
-        if sys.argv[1] == 'manualcheck':
-            print 'Manual check: skipping'
-            exit(0)
-
-    # Create cache dir if it does not exist
-    cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))
-    if not os.path.exists(cachedir):
-        os.makedirs(cachedir)
-
-    # Set the encoding
-    # The "ugly hack" :P 
-    reload(sys)  
-    sys.setdefaultencoding('utf8')
 
     # Get results
     result = dict()
     result = merge_two_dicts(get_snowagent_config(), get_snowagent_version())
 
     # Write snowagent results to cache
+    cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))
     output_plist = os.path.join(cachedir, 'snowagent.plist')
     FoundationPlist.writePlist(result, output_plist)
 #    print FoundationPlist.writePlistToString(result)
