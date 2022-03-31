@@ -83,7 +83,7 @@ def get_snowagent_config():
         except:
             snowagent_config['drop_location'] = ""
 
-        xml_str = ElementTree.tostring(root, encoding='utf8', method='xml')
+        xml_str = ElementTree.tostring(root, encoding='utf8', method='xml').decode()
 
         if 'key="software.scan.running_processes" value="true"' in xml_str:
             snowagent_config['software_scan_running_processes'] = 1    
