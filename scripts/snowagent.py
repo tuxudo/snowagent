@@ -60,10 +60,20 @@ def get_snowagent_config():
                 snowagent_config['configname'] = xmldict['Agent']['ConfigName']
         except:
             snowagent_config['configname'] = ""
-
+        
         try:
-            if xmldict['Server']['Endpoint']['Address']:
-                snowagent_config['server_address'] = xmldict['Server']['Endpoint']['Address']
+            if xmldict['Server']['Endpoint']:
+
+                snowagent_config['server_address'] = ""
+
+                for server in xmldict['Server']['Endpoint']:
+                    if "XmlDictConfig" in str(type(server)):
+                        snowagent_config['server_address'] = snowagent_config['server_address']+", "+server['Address']
+                    else:
+                        snowagent_config['server_address'] = ", "+xmldict['Server']['Endpoint']['Address']
+
+                snowagent_config['server_address'] = snowagent_config['server_address'][2:]
+
         except:
             snowagent_config['server_address'] = ""
 
