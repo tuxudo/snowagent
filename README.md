@@ -19,3 +19,4 @@ Table Schema
 * software_scan_running_processes - Boolean - Should scan running processes
 * software_scan_jar - Boolean - Should scan JAR files
 * http_ssl_verify - Boolean - Verify HTTP SSL
+* snowpack_count - INT(11) - Count of Snowpack files on client

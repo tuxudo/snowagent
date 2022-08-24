@@ -14,5 +14,6 @@
  "http_ssl_verify":"Verify HTTP SSL Connections",
  "snowagent":"Snow Agent",
  "snowagent_versions":"Snow Agent Versions",
- "reporttitle":"Snow Agent Report"
+ "reporttitle":"Snow Agent Report",
+ "snowpack_count":"Snow Packs"
 }

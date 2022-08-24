@@ -10,6 +10,7 @@ import os
 import sys
 import platform
 import re
+import fnmatch
 from xml.etree import cElementTree as ElementTree
 
 sys.path.insert(0,'/usr/local/munki')
@@ -109,10 +110,17 @@ def get_snowagent_config():
         elif 'key="http.ssl_verify" value="false"' in xml_str:
             snowagent_config['http_ssl_verify'] = 0
 
+        snowagent_config['snowpack_count'] = get_snowpack_count()
+
         return snowagent_config
 
     else:
         return {}
+
+def get_snowpack_count():
+    count = len(fnmatch.filter(os.listdir('/opt/snow/data/'), '*.snowpack'))
+    return count
+
 
 class XmlListConfig(list):
     def __init__(self, aList):
@@ -128,7 +136,6 @@ class XmlListConfig(list):
                 text = element.text.strip()
                 if text:
                     self.append(text)
-
 
 class XmlDictConfig(dict):
     '''
@@ -183,16 +190,7 @@ def merge_two_dicts(x, y):
 
 def main():
     """Main"""
-    # Skip manual check
-    if len(sys.argv) > 1:
-        if sys.argv[1] == 'manualcheck':
-            print 'Manual check: skipping'
-            exit(0)
 
-    # Create cache dir if it does not exist
-    cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))
-    if not os.path.exists(cachedir):
-        os.makedirs(cachedir)
 
     # Set the encoding
     # The "ugly hack" :P 
@@ -204,6 +202,7 @@ def main():
     result = merge_two_dicts(get_snowagent_config(), get_snowagent_version())
 
     # Write snowagent results to cache
+    cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))
     output_plist = os.path.join(cachedir, 'snowagent.plist')
     FoundationPlist.writePlist(result, output_plist)
 #    print FoundationPlist.writePlistToString(result)

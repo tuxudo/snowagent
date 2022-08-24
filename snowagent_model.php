@@ -22,6 +22,7 @@ class Snowagent_model extends \Model {
 		$this->rs['software_scan_running_processes'] = ''; // True/False
 		$this->rs['software_scan_jar'] = ''; // True/False
 		$this->rs['http_ssl_verify'] = ''; // True/False
+		$this->rs['snowpack_count'] = null;
 
 		if ($serial) {
 			$this->retrieve_record($serial);
@@ -63,6 +64,7 @@ class Snowagent_model extends \Model {
                 'software_scan_running_processes' => null,
                 'software_scan_jar' => null,
                 'http_ssl_verify' => null
+                'snowpack_count' => null
             );
 
             // Process each key
