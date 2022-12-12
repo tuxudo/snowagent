@@ -107,11 +107,14 @@ class Snowagent_controller extends Module_controller
      **/
     public function get_data($serial_number = '')
     {
-        $obj = new View();
-        $sql = "SELECT sitename, configname, server_address, version, build, rev, version_long, client_cert, http_ssl_verify, software_scan_running_processes, software_scan_jar
+        // Remove non-serial number characters
+        $serial_number = preg_replace("/[^A-Za-z0-9_\-]]/", '', $serial_number);
+
+        $sql = "SELECT sitename, configname, server_address, version, build, rev, version_long, client_cert, http_ssl_verify, snowpack_count, software_scan_running_processes, software_scan_jar
                     FROM snowagent 
                     WHERE serial_number = '$serial_number'";
         
+        $obj = new View();
         $queryobj = new Snowagent_model();
         $snowagent_tab = $queryobj->query($sql);
         $obj->view('json', array('msg' => current(array('msg' => $snowagent_tab)))); 

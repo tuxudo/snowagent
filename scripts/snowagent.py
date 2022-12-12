@@ -10,6 +10,7 @@ import os
 import sys
 import platform
 import re
+import fnmatch
 from xml.etree import cElementTree as ElementTree
 
 sys.path.insert(0,'/usr/local/munki')
@@ -110,10 +111,17 @@ def get_snowagent_config():
         elif 'key="http.ssl_verify" value="false"' in xml_str:
             snowagent_config['http_ssl_verify'] = 0
 
+        snowagent_config['snowpack_count'] = get_snowpack_count()
+
         return snowagent_config
 
     else:
         return {}
+
+def get_snowpack_count():
+    count = len(fnmatch.filter(os.listdir('/opt/snow/data/'), '*.snowpack'))
+    return count
+
 
 class XmlListConfig(list):
     def __init__(self, aList):
@@ -129,7 +137,6 @@ class XmlListConfig(list):
                 text = element.text.strip()
                 if text:
                     self.append(text)
-
 
 class XmlDictConfig(dict):
     '''
