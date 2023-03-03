@@ -63,7 +63,7 @@ class Snowagent_model extends \Model {
                 'drop_location' => null,
                 'software_scan_running_processes' => null,
                 'software_scan_jar' => null,
-                'http_ssl_verify' => null
+                'http_ssl_verify' => null,
                 'snowpack_count' => null
             );
 
