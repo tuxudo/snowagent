@@ -1,6 +1,6 @@
 <div class="col-lg-4 col-md-6">
     <div class="card" id="snowagent_scan_running_processes-widget">
-        <div id="snowagent_scan_running_processes-widget" class="card-heading" data-container="body">
+        <div id="snowagent_scan_running_processes-widget" class="card-header" data-container="body">
             <i class="fa fa-qrcode"></i> 
             <span data-i18n="snowagent.software_scan_running_processes"></span>
             <a href="/show/listing/snowagent/snowagent" class="pull-right"><i class="fa fa-list"></i></a>

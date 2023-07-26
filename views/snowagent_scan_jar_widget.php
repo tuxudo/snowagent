@@ -1,6 +1,6 @@
 <div class="col-lg-4 col-md-6">
     <div class="card" id="snowagent_scan_jar-widget">
-        <div id="snowagent_scan_jar-widget" class="card-heading" data-container="body">
+        <div id="snowagent_scan_jar-widget" class="card-header" data-container="body">
             <i class="fa fa-coffee"></i> 
             <span data-i18n="snowagent.software_scan_jar"></span>
             <a href="/show/listing/snowagent/snowagent" class="pull-right"><i class="fa fa-list"></i></a>

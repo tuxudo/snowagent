@@ -1,6 +1,6 @@
 <div class="col-lg-4 col-md-6">
 	<div class="card" id="snowagent-versions-widget">
-		<div class="card-heading" data-container="body">
+		<div class="card-header" data-container="body">
 			<i class="fa fa-snowflake-o "></i>
 			<span data-i18n="snowagent.snowagent_versions"></span>
 			<a href="/show/listing/snowagent/snowagent" class="pull-right"><i class="fa fa-list"></i></a>
