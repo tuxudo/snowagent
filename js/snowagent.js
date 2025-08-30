@@ -38,3 +38,25 @@ var softwareScanJarFilter = function(colNumber, d){
     }
 }
 
+// Format Boolean fields with success/danger classes: 1 = Yes (success), 0 = No (danger), NULL = Unknown (warning)
+var formatSnowagentBoolean = function(col, row) {
+    var cell = $('td:eq('+col+')', row),
+        value = cell.text().trim();
+    
+    switch (value) {
+        case '1':
+            value = '<span class="label label-success">Yes</span>';
+            break;
+        case '0':
+            value = '<span class="label label-danger">No</span>';
+            break;
+        default:
+            value = '<span class="label label-warning">Unknown</span>';
+    }
+    
+    cell.html(value);
+}
+
+// Make sure functions are in global scope
+window.formatSnowagentBoolean = formatSnowagentBoolean;
+

@@ -1,0 +1,8 @@
+1:
+    snowagent_scan_jar: {  }
+    snowagent_versions: {  }
+    snowagent_server_addresses: {  }
+    snowagent_configname: {  }
+    snowagent_http_ssl_verify: {  }
+
+display_name: 'snowagent.reporttitle'

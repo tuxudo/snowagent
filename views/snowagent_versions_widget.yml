@@ -1,0 +1,8 @@
+type: scrollbox
+widget_id: snowagent-versions-widget
+api_url: /module/snowagent/get_versions
+i18n_title: snowagent.snowagent_versions
+icon: fa-snowflake-o
+listing_link: /show/listing/snowagent/snowagent
+search_key: version
+badge: count

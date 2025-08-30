@@ -1,0 +1,8 @@
+type: scrollbox
+widget_id: snowagent-server-addresses-widget
+api_url: /module/snowagent/get_server_addresses
+i18n_title: snowagent.server_addresses
+icon: fa-server
+listing_link: /show/listing/snowagent/snowagent
+search_key: server_address
+badge: count

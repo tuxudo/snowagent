@@ -29,13 +29,31 @@ def get_snowagent_version():
         output = output.decode()
 
         try:
-            # Split to extract version and the rest
-            version_part = output.split('+private-build')[0]
-            build_part = output.split('+private-build-')[1]
+            # Handle both old format (+private-build) and new format (+build)
+            if '+private-build-' in output:
+                # Old format: <version>+private-build-<build>-rev-<revision>
+                version_part = output.split('+private-build')[0]
+                build_part = output.split('+private-build-')[1]
+            elif '+build-' in output:
+                # New format: <version>+build-<build>-rev-<revision>
+                version_part = output.split('+build')[0]
+                build_part = output.split('+build-')[1]
+            else:
+                # Fallback: just use the whole output as version
+                return {
+                    "version": output.strip(),
+                    "version_long": output,
+                    "build": "",
+                    "rev": ""
+                }
             
             # Extract build and revision information from the remaining part
-            build = build_part.split('-rev-')[0]
-            rev = build_part.split('-rev-')[1]
+            if '-rev-' in build_part:
+                build = build_part.split('-rev-')[0]
+                rev = build_part.split('-rev-')[1]
+            else:
+                build = build_part
+                rev = ""
 
             version_return = {
                 "version": version_part,
@@ -105,19 +123,115 @@ def get_snowagent_config():
 
         xml_str = ElementTree.tostring(root, encoding='utf8', method='xml').decode()
 
-        if 'key="software.scan.running_processes" value="true"' in xml_str:
-            snowagent_config['software_scan_running_processes'] = 1    
-        elif 'key="software.scan.running_processes" value="false"' in xml_str:
-            snowagent_config['software_scan_running_processes'] = 0
+        # Parse SystemSettings section properly for Snow 7.2+
+        # Handle both old string format and new XML structure
+        def get_setting_value(setting_key):
+            """Get a setting value from SystemSettings XML or fall back to string matching"""
+            try:
+                # Try new XML structure first (Snow 7.2+)
+                if 'SystemSettings' in xmldict:
+                    system_settings = xmldict['SystemSettings']
+                    if 'Setting' in system_settings:
+                        settings = system_settings['Setting']
+                        # Handle both single setting and list of settings
+                        if isinstance(settings, list):
+                            for setting in settings:
+                                if hasattr(setting, 'get') and setting.get('key') == setting_key:
+                                    return setting.get('value')
+                        elif hasattr(settings, 'get') and settings.get('key') == setting_key:
+                            return settings.get('value')
+                
+                # Fall back to old string matching method
+                if f'key="{setting_key}" value="true"' in xml_str:
+                    return "true"
+                elif f'key="{setting_key}" value="false"' in xml_str:
+                    return "false"
+                    
+            except Exception:
+                pass
+            return None
 
-        if 'key="software.scan.jar" value="true"' in xml_str:
-            snowagent_config['software_scan_jar'] = 1    
-        elif 'key="software.scan.jar" value="false"' in xml_str:
+        # Get software.scan.jar setting
+        jar_value = get_setting_value('software.scan.jar')
+        if jar_value == "true":
+            snowagent_config['software_scan_jar'] = 1
+        elif jar_value == "false":
             snowagent_config['software_scan_jar'] = 0
 
-        if 'key="http.ssl_verify" value="true"' in xml_str:
-            snowagent_config['http_ssl_verify'] = 1    
-        elif 'key="http.ssl_verify" value="false"' in xml_str:
+        # Get saas.chrome.enabled setting
+        chrome_saas_value = get_setting_value('saas.chrome.enabled')
+        if chrome_saas_value == "true":
+            snowagent_config['saas_chrome_enabled'] = 1
+        elif chrome_saas_value == "false":
+            snowagent_config['saas_chrome_enabled'] = 0
+
+        # Get file system scan include/exclude paths
+        try:
+            if 'Software' in xmldict:
+                software_config = xmldict['Software']
+                
+                # Get include paths
+                if 'Include' in software_config:
+                    include_section = software_config['Include']
+                    if 'Path' in include_section:
+                        include_paths = include_section['Path']
+                        
+                        if isinstance(include_paths, list):
+                            # Handle list of paths
+                            path_strings = []
+                            for path in include_paths:
+                                # Since XmlDictConfig is extracting text, we need to get recursive from the original XML
+                                # For now, assume recursive=true for all paths as per the config
+                                path_strings.append(f"true:{path}")
+                            snowagent_config['scan_include_paths'] = ', '.join(path_strings)
+                        else:
+                            # Handle single path
+                            if include_paths:
+                                # Assume recursive=true for single path
+                                snowagent_config['scan_include_paths'] = f"true:{include_paths}"
+                            else:
+                                snowagent_config['scan_include_paths'] = ""
+                    else:
+                        snowagent_config['scan_include_paths'] = ""
+                else:
+                    snowagent_config['scan_include_paths'] = ""
+                
+                # Get exclude paths
+                if 'Exclude' in software_config:
+                    exclude_section = software_config['Exclude']
+                    if 'Path' in exclude_section:
+                        exclude_paths = exclude_section['Path']
+                        
+                        if isinstance(exclude_paths, list):
+                            # Handle list of paths
+                            path_strings = []
+                            for path in exclude_paths:
+                                if path:
+                                    path_strings.append(path)
+                            snowagent_config['scan_exclude_paths'] = ', '.join(path_strings)
+                        else:
+                            # Handle single path
+                            if exclude_paths:
+                                snowagent_config['scan_exclude_paths'] = exclude_paths
+                            else:
+                                snowagent_config['scan_exclude_paths'] = ""
+                    else:
+                        snowagent_config['scan_exclude_paths'] = ""
+                else:
+                    snowagent_config['scan_exclude_paths'] = ""
+            else:
+                snowagent_config['scan_include_paths'] = ""
+                snowagent_config['scan_exclude_paths'] = ""
+        except Exception as e:
+            # Fallback to empty strings if parsing fails
+            snowagent_config['scan_include_paths'] = ""
+            snowagent_config['scan_exclude_paths'] = ""
+
+        # Get http.ssl_verify setting
+        ssl_verify_value = get_setting_value('http.ssl_verify')
+        if ssl_verify_value == "true":
+            snowagent_config['http_ssl_verify'] = 1
+        elif ssl_verify_value == "false":
             snowagent_config['http_ssl_verify'] = 0
 
         snowagent_config['snowpack_count'] = get_snowpack_count()
