@@ -1,0 +1,15 @@
+type: button
+widget_id: snowagent_http_ssl_verify-widget
+api_url: /module/snowagent/get_list_boolean/http_ssl_verify
+i18n_title: snowagent.http_ssl_verify
+icon: fa-search
+listing_link: /show/listing/snowagent/snowagent
+buttons:
+  - label: "0"
+    i18n_label: no
+    class: btn-warning
+    search_component: software_http_ssl_verify = 0
+  - label: "1"
+    i18n_label: yes
+    class: btn-success
+    search_component: software_http_ssl_verify = 1

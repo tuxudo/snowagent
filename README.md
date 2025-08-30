@@ -1,5 +1,5 @@
-Snowagent Module
-==============
+Snowagent Module for Snow Agent v7
+==================================
 
 Reports back on how the Snow Software agent is configured.
 
@@ -18,5 +18,8 @@ Table Schema
 * drop_location - TEXT - Location of scan results
 * software_scan_running_processes - Boolean - Should scan running processes
 * software_scan_jar - Boolean - Should scan JAR files
+* saas_chrome_enabled - Boolean - Chrome SaaS scanning enabled
+* scan_include_paths - TEXT - File system scan include paths
+* scan_exclude_paths - TEXT - File system scan exclude patterns
 * http_ssl_verify - Boolean - Verify HTTP SSL
 * snowpack_count - INT(11) - Count of Snowpack files on client

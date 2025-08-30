@@ -1,0 +1,19 @@
+type: button
+widget_id: snowagent_scan_jar-widget
+api_url: /module/snowagent/get_list_boolean/software_scan_jar
+i18n_title: snowagent.software_scan_jar
+icon: fa-coffee
+listing_link: /show/listing/snowagent/snowagent
+buttons:
+  - label: "0"
+    i18n_label: no
+    class: btn-info
+    search_component: software_scan_jar = 0
+  - label: "1"
+    i18n_label: yes
+    class: btn-success
+    search_component: software_scan_jar = 1
+  - label: "null"
+    i18n_label: unknown
+    class: btn-warning
+    search_component: software_scan_jar IS NULL

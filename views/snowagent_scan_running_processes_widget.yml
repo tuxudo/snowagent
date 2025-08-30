@@ -1,0 +1,15 @@
+type: button
+widget_id: snowagent_scan_running_processes-widget
+api_url: /module/snowagent/get_list_boolean/software_scan_running_processes
+i18n_title: snowagent.software_scan_running_processes
+icon: fa-qrcode
+listing_link: /show/listing/snowagent/snowagent
+buttons:
+  - label: no
+    i18n_label: no
+    class: btn-info
+    search_component: software_scan_running_processes = 0
+  - label: yes
+    i18n_label: yes
+    class: btn-success
+    search_component: software_scan_running_processes = 1

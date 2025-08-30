@@ -11,9 +11,13 @@
  "drop_location":"Scan Result Location",
  "software_scan_running_processes":"Scan Running Processes",
  "software_scan_jar":"Scan JAR Files",
+ "saas_chrome_enabled":"Chrome SaaS Enabled",
+ "scan_include_paths":"Scan Include Paths",
+ "scan_exclude_paths":"Scan Exclude Paths",
  "http_ssl_verify":"Verify HTTP SSL Connections",
  "snowagent":"Snow Agent",
  "snowagent_versions":"Snow Agent Versions",
+ "server_addresses":"Server Addresses",
  "reporttitle":"Snow Agent Report",
  "snowpack_count":"Snow Packs"
 }

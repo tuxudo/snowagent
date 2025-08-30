@@ -1,0 +1,8 @@
+type: scrollbox
+widget_id: snowagent-configname-widget
+api_url: /module/snowagent/get_config_names
+i18n_title: snowagent.configname
+icon: fa-cogs
+listing_link: /show/listing/snowagent/snowagent
+search_key: configname
+badge: count

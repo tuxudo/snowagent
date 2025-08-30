@@ -1,0 +1,25 @@
+client_tabs:
+    snowagent:
+        view: snowagent_tab
+        i18n: snowagent.snowagent
+listings:
+    snowagent:
+        view: snowagent_listing
+        i18n: snowagent.snowagent
+widgets:
+    snowagent_http_ssl_verify:
+        view: snowagent_http_ssl_verify_widget
+    snowagent_scan_jar:
+        view: snowagent_scan_jar_widget
+    snowagent_scan_running_processes:
+        view: snowagent_scan_running_processes_widget
+    snowagent_versions:
+        view: snowagent_versions_widget
+    snowagent_server_addresses:
+        view: snowagent_server_addresses_widget
+    snowagent_configname:
+        view: snowagent_configname_widget
+reports:
+    snowagent_report:
+        view: snowagent_report
+        i18n: snowagent.reporttitle

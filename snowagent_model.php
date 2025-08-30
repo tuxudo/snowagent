@@ -21,6 +21,9 @@ class Snowagent_model extends \Model {
 		$this->rs['drop_location'] = '';
 		$this->rs['software_scan_running_processes'] = ''; // True/False
 		$this->rs['software_scan_jar'] = ''; // True/False
+		$this->rs['saas_chrome_enabled'] = ''; // True/False
+		$this->rs['scan_include_paths'] = ''; // Include paths
+		$this->rs['scan_exclude_paths'] = ''; // Exclude paths
 		$this->rs['http_ssl_verify'] = ''; // True/False
 		$this->rs['snowpack_count'] = null;
 
@@ -63,6 +66,9 @@ class Snowagent_model extends \Model {
                 'drop_location' => null,
                 'software_scan_running_processes' => null,
                 'software_scan_jar' => null,
+                'saas_chrome_enabled' => null,
+                'scan_include_paths' => null,
+                'scan_exclude_paths' => null,
                 'http_ssl_verify' => null,
                 'snowpack_count' => null
             );
