@@ -9,22 +9,22 @@
 class Snowagent_controller extends Module_controller
 {
 
-	/*** Protect methods with auth! ****/
-	function __construct()
-	{
-		// Store module path
-		$this->module_path = dirname(__FILE__);
-	}
+    /*** Protect methods with auth! ****/
+    function __construct()
+    {
+        // Store module path
+        $this->module_path = dirname(__FILE__);
+    }
 
-	/**
-	 * Default method
-	 * @author tuxudo
-	 *
-	 **/
-	function index()
-	{
-		echo "You've loaded the snowagent module!";
-	}
+    /**
+     * Default method
+     * @author tuxudo
+     *
+     **/
+    function index()
+    {
+        echo "You've loaded the snowagent module!";
+    }
     
     /**
     * Snowagent HTTP SSL verify widget
@@ -101,7 +101,7 @@ class Snowagent_controller extends Module_controller
         $obj->view('json', array('msg' => $queryobj->query($sql)));
     }
 
-	/**
+    /**
      * Retrieve data in json format
      *
      **/
@@ -112,7 +112,9 @@ class Snowagent_controller extends Module_controller
 
         $sql = "SELECT sitename, configname, server_address, version, build, rev, version_long, client_cert, http_ssl_verify, snowpack_count, software_scan_running_processes, software_scan_jar
                     FROM snowagent 
-                    WHERE serial_number = '$serial_number'";
+                    LEFT JOIN reportdata USING (serial_number)
+                    ".get_machine_group_filter()."
+                    AND serial_number = '$serial_number'";
         
         $obj = new View();
         $queryobj = new Snowagent_model();
