@@ -13,7 +13,6 @@ import re
 import fnmatch
 from xml.etree import cElementTree as ElementTree
 
-sys.path.insert(0,'/usr/local/munki')
 sys.path.insert(0,'/usr/local/munkireport')
 
 from munkilib import FoundationPlist

@@ -112,7 +112,9 @@ class Snowagent_controller extends Module_controller
 
         $sql = "SELECT sitename, configname, server_address, version, build, rev, version_long, client_cert, http_ssl_verify, snowpack_count, software_scan_running_processes, software_scan_jar
                     FROM snowagent 
-                    WHERE serial_number = '$serial_number'";
+                    LEFT JOIN reportdata USING (serial_number)
+                    ".get_machine_group_filter()."
+                    AND serial_number = '$serial_number'";
         
         $obj = new View();
         $queryobj = new Snowagent_model();
